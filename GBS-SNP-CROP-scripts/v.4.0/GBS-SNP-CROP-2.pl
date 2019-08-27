@@ -33,7 +33,7 @@ my $H = "\n###########################################################\n"
 	."\nA detailed description can be found at https://github.com/halelab/GBS-SNP-CROP\n\n"
 	."Usage: perl GBS-SNP-CROP-2.pl [options]\n\n"
 	."Options:\n"
-	."-tm: Path to Trimmomatic jar file. String. Default: /usr/local/bin/trimmomatic-0.33.jar.\n"
+	."-tm: System call for trimmomatic. String. Default: trimmomatic.\n"
 	."-d: Data type. Either PE (Paired-End) or SE (Single-End). String. Required.\n"
 	."-fq: FASTQ file name seed. String. Required\n"
 	."-t: Number of independent threads used. Numeric. Default: 10\n"
@@ -52,7 +52,7 @@ if (! defined $help or $help =~ "h" or $help =~ "H")  {
 #################################
 # Setting the parameters values
 #################################
-$trimmomatic = '/usr/local/bin/trimmomatic-0.33.jar';
+$trimmomatic = 'trimmomatic';
 $threads = 10;	$phred = 33;
 $adaptor = 'TruSeq3-PE.fa:2:30:10';
 $leading = 30;	$sliding = '4:30';
@@ -99,9 +99,9 @@ if ($dataType eq "PE") {
 	my $trimoSER2OUT = join("","$fastq_seed","_SE_R2parsed",".fq.gz");
 	
 	if ($adaptor ne '0') {
-		system ( "java -jar $trimmomatic PE -phred$phred -threads $threads $outR1 $outR2 $trimoPER1OUT $trimoSER1OUT $trimoPER2OUT $trimoSER2OUT MINLEN:$minlen ILLUMINACLIP:$adaptor LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
+		system ( "$trimmomatic PE -phred$phred -threads $threads $outR1 $outR2 $trimoPER1OUT $trimoSER1OUT $trimoPER2OUT $trimoSER2OUT MINLEN:$minlen ILLUMINACLIP:$adaptor LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
 	} elsif ($adaptor eq '0') {
-		system ( "java -jar $trimmomatic PE -phred$phred -threads $threads $outR1 $outR2 $trimoPER1OUT $trimoSER1OUT $trimoPER2OUT $trimoSER2OUT MINLEN:$minlen LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
+		system ( "$trimmomatic PE -phred$phred -threads $threads $outR1 $outR2 $trimoPER1OUT $trimoSER1OUT $trimoPER2OUT $trimoSER2OUT MINLEN:$minlen LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
 	}
 
 	print "\nDONE.\n";
@@ -123,9 +123,9 @@ if ($dataType eq "PE") {
 	my $trimoSER1OUT = join("","$fastq_seed","_SE_R1parsed",".fq.gz");
 	
 	if ($adaptor ne '0') {
-		system ( "java -jar $trimmomatic SE -phred$phred -threads $threads $outR1 $trimoSER1OUT MINLEN:$minlen ILLUMINACLIP:$adaptor LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
+		system ( "$trimmomatic SE -phred$phred -threads $threads $outR1 $trimoSER1OUT MINLEN:$minlen ILLUMINACLIP:$adaptor LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
 	} elsif ($adaptor eq '0') {
-		system ( "java -jar $trimmomatic SE -phred$phred -threads $threads $outR1 $trimoSER1OUT MINLEN:$minlen LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
+		system ( "$trimmomatic SE -phred$phred -threads $threads $outR1 $trimoSER1OUT MINLEN:$minlen LEADING:$leading SLIDINGWINDOW:$sliding TRAILING:$trailing MINLEN:$minlen" );
 	}
 
 	print "\nDONE.\n";
